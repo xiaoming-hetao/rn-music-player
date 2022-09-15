@@ -5,6 +5,15 @@ interface SongsResult {
   album: any
 }
 
-export interface SearchResult {
+export interface KeywordSearchResult {
   songs: SongsResult[]
+}
+
+export interface HotSearchResult {
+  searchWord: string
+}
+
+export interface HotTopicResult {
+  actId: number
+  title: string
 }

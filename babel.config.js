@@ -8,7 +8,7 @@ module.exports = {
         paths: [
           {
             rootPathSuffix: './src',
-            rootPathPrefix: '~/', // 使用 ~/  代替 ./src (~指向的就是src目录)
+            rootPathPrefix: '~/*', // 使用 ~/  代替 ./src (~指向的就是src目录)
           },
           {
             rootPathSuffix: './assets',
@@ -18,4 +18,4 @@ module.exports = {
       },
     ],
   ],
-};
+}

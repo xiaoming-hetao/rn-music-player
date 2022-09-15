@@ -1,32 +1,44 @@
-import React, { useEffect, useState } from 'react'
-import { View, SafeAreaView, Text } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, SafeAreaView } from 'react-native'
 import BaseTextInput from '../../components/TextInput'
-import { keywordSearch } from '../../services/search'
-import { SongsResult } from '../../services/search/data'
+
+import { RouteName } from '../../routes'
+import {
+  getHotSearch,
+  getHotTopicSearch,
+  HotTopicResult,
+  HotSearchResult,
+} from '../../services/search'
 
 import { styles } from './Discovery.style'
 
-const Discovery = () => {
-  const [searchResult, setSearchResult] = useState<Array<SongsResult>>([])
+const Discovery = ({ navigation }: { navigation: any }) => {
+  const [hotSearchResult, setHotSearchResult] = useState<
+    Array<HotSearchResult>
+  >([])
+  const [hotTopicResult, setHotTopicResult] = useState<Array<HotTopicResult>>(
+    [],
+  )
 
-  const handleInputChange = async (text: string) => {
-    const { result } = await keywordSearch(text)
-    const { songs } = result
-    setSearchResult(songs)
+  const handleHotSearch = async () => {
+    const { data } = await getHotSearch()
+    const { hot } = await getHotTopicSearch()
+    setHotSearchResult(data)
+    setHotTopicResult(hot)
   }
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    handleHotSearch()
+  }, [])
+
+  const handleFocus = () => {
+    navigation.navigate(RouteName.search, { hotSearchResult, hotTopicResult })
+  }
 
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <BaseTextInput placeholder="搜索" onChangeText={handleInputChange} />
-
-        <View>
-          {searchResult.map((item: SongsResult) => (
-            <Text>{item.name}</Text>
-          ))}
-        </View>
+        <BaseTextInput placeholder="搜索" onFocus={handleFocus} />
       </View>
     </SafeAreaView>
   )
